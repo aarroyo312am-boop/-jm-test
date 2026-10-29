@@ -262,6 +262,7 @@ footer.site a:hover{text-decoration:underline}
 .steps li:last-child{margin-bottom:0}
 
 /* form states */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .fail{display:none;margin:0 0 14px;padding:14px 16px;border:1.5px solid var(--red);border-radius:3px;background:#FDF0EF;font-size:15px}
 .fail b{display:block;color:var(--red-dk);margin-bottom:4px}
 .fail p{margin:0}
@@ -391,6 +392,7 @@ input[aria-invalid="true"]{border-color:var(--red)}
         <label for="notes" data-t="l8">Anything else</label>
         <textarea id="notes" name="notes" data-ph="ph1" placeholder="Unit type, trailer length, where it's parked…"></textarea>
       </div>
+      <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
       <div class="fail" id="fail" role="alert">
         <b data-t="fl1">That didn't go through.</b>
         <p data-t="fl2">Please call the shop at <a href="tel:+16309307192">(630) 930-7192</a> and they'll take care of you.</p>
@@ -587,6 +589,7 @@ form.addEventListener('submit',function(e){
   form.name.setAttribute('aria-invalid',badName);form.phone.setAttribute('aria-invalid',badPhone);
   if(badName){form.name.focus();return;}
   if(badPhone){form.phone.focus();return;}
+  if(form.website.value){form.style.display='none';done.style.display='block';return;} /* spam bot: fake success, send nothing */
   if(WEBHOOK.indexOf('http')!==0){showFail();return;}
   var payload=new URLSearchParams({
     name:name, company:form.company.value.trim(), phone:phone, email:form.email.value.trim(),
